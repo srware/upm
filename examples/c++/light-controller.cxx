@@ -16,7 +16,7 @@
 #define DS1808_GPIO_EDISON_LIVE 36 // Edison GP14
 
 //! [Interesting]
-// Simple example of using ILightController to determine 
+// Simple example of using ILightController to determine
 // which controller is present and return its name.
 // ILightController is then used to get readings from sensor
 
@@ -27,21 +27,21 @@ upm::ILightController* getLightController()
       lightController = new upm::LP8860(LP8860_GPIO_PWR, EDISON_I2C_BUS);
       return lightController;
    } catch (std::exception& e) {
-      std::cerr << "LP8860: " << e.what() << std::endl;      
+      std::cerr << "LP8860: " << e.what() << std::endl;
    }
    try {
-      lightController = new upm::DS1808LC(DS1808_GPIO_PWR, EDISON_I2C_BUS);
+      lightController = new upm::DS1808LC(DS1808_GPIO_PWR, EDISON_I2C_BUS, DS1808_GPIO_EDISON_LIVE);
       return lightController;
    } catch (std::exception& e) {
-      std::cerr << "DS1808LC: " << e.what() << std::endl;      
+      std::cerr << "DS1808LC: " << e.what() << std::endl;
    }
    try {
       lightController = new upm::HLG150H(HLG150H_GPIO_RELAY, HLG150H_GPIO_PWM);
       return lightController;
    } catch (std::exception& e) {
-      std::cerr << "HLG150H: " << e.what() << std::endl;      
+      std::cerr << "HLG150H: " << e.what() << std::endl;
    }
-   return lightController;   
+   return lightController;
 }
 
 
@@ -65,7 +65,7 @@ int main( int argc, char **argv )
    upm::ILightController *lightController = getLightController();
    if (lightController != NULL)
    {
-      std::cout << "Detected light controller " << lightController->getModuleName() << std::endl;      
+      std::cout << "Detected light controller " << lightController->getModuleName() << std::endl;
    }
    else
    {
@@ -74,21 +74,21 @@ int main( int argc, char **argv )
    }
 
    try {
-      std::cout <<  "Existing state: "; printState(lightController);      
+      std::cout <<  "Existing state: "; printState(lightController);
       if (argc == 2)
       {
          std::string arg = argv[1];
          int brightness = ::atoi(argv[1]);
          if (brightness > 0) {
-            lightController->setPowerOn();         
+            lightController->setPowerOn();
             lightController->setBrightness(brightness);
          } else
-            lightController->setPowerOff();                  
+            lightController->setPowerOff();
       }
       std::cout <<  "Now: ";printState(lightController);
    } catch (std::exception& e) {
-      std::cout << "Error: " << e.what() << std::endl; 
-      status = 1;  
+      std::cout << "Error: " << e.what() << std::endl;
+      status = 1;
    }
 
    delete lightController;

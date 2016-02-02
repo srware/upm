@@ -13,13 +13,15 @@
 
 
 namespace upm {
-DS1808LC::DS1808LC(int gpioPower, int i2cBus)
+DS1808LC::DS1808LC(int gpioPower, int i2cBus, int gpioLive)
 {
    mraa_set_log_level(7);
    pinPower = gpioPower;
+   pinLive = gpioLive;
    i2c = new mraa::I2c(i2cBus);
    status = i2c->address(DS1808_I2C_ADDR);
    getBrightness();
+   hasPoweredOn = false;
 }
 
 DS1808LC::~DS1808LC()
@@ -43,6 +45,11 @@ void DS1808LC::setPowerOn()
    {
       MraaUtils::setGpio(pinPower, 1);
       setBrightness(0);
+      if (!hasPoweredOn) {
+         MraaUtils::setGpio(pinLive, 1);
+         hasPoweredOn = true;
+      }
+
    }
 }
 
@@ -62,7 +69,7 @@ int DS1808LC::getBrightness()
    else
       UPM_THROW("i2c read error");
 }
-   
+
 
 void DS1808LC::setBrightness(int dutyPercent)
 {
