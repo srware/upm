@@ -58,6 +58,7 @@ int BME280::m_bus = 0;
 
 BME280::BME280 (int bus, int devAddr) {
 	m_bus = bus;
+    pthread_mutex_init(&mutex, NULL);
 	if( m_i2c == NULL)
 	{
       		m_i2c = new mraa::I2c(m_bus);
@@ -468,31 +469,67 @@ void BME280::BME280_delay_msek(uint16_t mseconds)
 /**
  * Get temperature measurement.
  */
-uint16_t BME280::getTemperatureRaw (){ return BME280::getTemperatureRawInternal(); }
+uint16_t BME280::getTemperatureRaw()
+{
+    pthread_mutex_lock(&mutex);
+	uint16_t value = getTemperatureRawInternal();
+    pthread_mutex_unlock(&mutex);
+    return value;
+}
 
 /**
  * Get temperature measurement.
  */
-int BME280::getTemperatureCelcius (){ return (BME280::getTemperatureInternal() + 50) /100; }
+int BME280::getTemperatureCelcius()
+{
+    pthread_mutex_lock(&mutex);
+	int value = (BME280::getTemperatureInternal() + 50) /100;
+    pthread_mutex_unlock(&mutex);
+    return value;
+}
 /**
  * Get relative humidity measurement.
  */
-uint16_t BME280::getHumidityRaw (){ return BME280::getHumidityRawInternal(); }
+uint16_t BME280::getHumidityRaw()
+{
+    pthread_mutex_lock(&mutex);
+	uint16_t value = BME280::getHumidityRawInternal();
+    pthread_mutex_unlock(&mutex);
+    return value;
+}
 
 /**
  * Get relative humidity measurement.
  */
-int BME280::getHumidityRelative (){ return (BME280::getHumidityInternal() + 500) / 1000; }
+int BME280::getHumidityRelative()
+{
+    pthread_mutex_lock(&mutex);
+	int value = (BME280::getHumidityInternal() + 500) / 1000;
+    pthread_mutex_unlock(&mutex);
+    return value;
+}
 
 /**
  * Return pressure
  */
-uint32_t BME280::getPressureRaw(){  return BME280::getPressureRawInternal(); }
+uint32_t BME280::getPressureRaw()
+{
+    pthread_mutex_lock(&mutex);
+	uint32_t value = BME280::getPressureRawInternal();
+    pthread_mutex_unlock(&mutex);
+    return value;
+}
 
 /**
  * Return calculated pressure (Pa)
  */
-int BME280::getPressurePa(){ return BME280::getPressureInternal(); }
+int BME280::getPressurePa()
+{
+    pthread_mutex_lock(&mutex);
+	int value = BME280::getPressureInternal();
+    pthread_mutex_unlock(&mutex);
+    return value;
+}
 
 
 

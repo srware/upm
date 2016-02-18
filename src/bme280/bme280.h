@@ -1,12 +1,14 @@
+#ifndef __BME280_H__
+#define __BME280_H__
+
+#include <pthread.h>
 #include <mraa/i2c.hpp>
 #include "upm/iPressureSensor.h"
 #include "upm/iTemperatureSensor.h"
 #include "upm/iHumiditySensor.h"
-#ifndef __BME280_H__
-#define __BME280_H__
 
 
-//#define BME280_MDELAY_DATA_TYPE uint32_t 
+//#define BME280_MDELAY_DATA_TYPE uint32_t
 
 /****************************************************/
 /**\name        I2C ADDRESS DEFINITIONS  */
@@ -72,7 +74,7 @@ class BME280 : public ITemperatureSensor, public IHumiditySensor, public IPressu
 
         /**
          * Return calculated pressure (Pa)
-         */ 
+         */
         int getPressurePa();
 
 
@@ -104,10 +106,10 @@ class BME280 : public ITemperatureSensor, public IHumiditySensor, public IPressu
          * Return  humidity
          */
 	int32_t getHumidityRawInternal(void);
-        
-       
-        
-              
+
+
+
+
         //int32_t getTemperatureRaw(void);
 
         /**
@@ -131,6 +133,7 @@ class BME280 : public ITemperatureSensor, public IHumiditySensor, public IPressu
 
         static mraa::I2c* m_i2c;
         static int m_bus;
+        pthread_mutex_t mutex;
 
         static int32_t i2c_write_string(uint8_t dev_addr,uint8_t*  ptr, uint8_t cnt);
         static int32_t i2c_write_read_string(uint8_t dev_addr,uint8_t reg_addr , uint8_t * ptr, uint8_t cnt);
