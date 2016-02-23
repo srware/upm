@@ -23,6 +23,7 @@
  */
 
 #include <unistd.h>
+#include <signal.h>
 #include <iostream>
 #include "max44009.h"
 #include "si1132.h"
@@ -34,6 +35,14 @@
 // Simple example of using ILightSensor to determine
 // which sensor is present and return its name.
 // ILightSensor is then used to get readings from sensor
+
+bool shouldRun = true;
+
+void signalHandler(int signo)
+{
+  if (signo == SIGINT)
+    shouldRun = false;
+}
 
 
 upm::ILightSensor* getLightSensor()
@@ -68,7 +77,8 @@ int main ()
       return 1;
    }
    std::cout << "Light sensor " << lightSensor->getModuleName() << " detected" << std::endl;
-   while (true) {
+   signal(SIGINT, signalHandler);
+   while (shouldRun) {
       try {
          float value = lightSensor->getVisibleLux();
          std::cout << "Light level = " << value << " lux" << std::endl;
