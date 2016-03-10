@@ -141,7 +141,6 @@ if (BUILDDOC)
 endif()
 
 if (IPK)
-
  # Get target package arch from Yocto ADT sysroot if set or host OS, mapping to Ubuntu name if necessary
   if (DEFINED ENV{OECORE_TARGET_SYSROOT})
     GET_FILENAME_COMPONENT (DETECTED_SYSROOT $ENV{OECORE_TARGET_SYSROOT} NAME)
