@@ -5,11 +5,6 @@ if ("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 message("WARNING: building into sources dir can be risky, prefer other directory")
 endif ()
 
-find_package (SWIG)
-if (SWIG_FOUND)
-  include (${SWIG_USE_FILE})
-endif ()
-
 find_package (Threads REQUIRED)
 find_package (PkgConfig REQUIRED)
 
@@ -73,6 +68,13 @@ option (RPM "Generate RPM using CPack" OFF)
 include (TargetArch)
 target_architecture (DETECTED_ARCH)
 message( INFO " - Target arch is ${DETECTED_ARCH}")
+
+if (BUILDSWIG)
+  find_package (SWIG REQUIRED)
+  if (SWIG_FOUND)
+    include (${SWIG_USE_FILE})
+  endif()
+endif()
 
 if (BUILDDOC)
   # add a target to generate API documentation with Doxygen
@@ -203,6 +205,6 @@ add_subdirectory (src)
 if(BUILDEXAMPLES)
   add_subdirectory (examples/c++)
   if (BUILDSWIGJAVA AND BUILDSWIG)
-#    add_subdirectory (examples/java)    
+#    add_subdirectory (examples/java)
   endif()
 endif()
