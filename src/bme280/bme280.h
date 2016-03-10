@@ -24,8 +24,6 @@ namespace upm {
 class BME280 : public ITemperatureSensor, public IHumiditySensor, public IPressureSensor {
     public:
 
-
-
         /**
          * Instanciates a BME280 object
          *
@@ -33,9 +31,7 @@ class BME280 : public ITemperatureSensor, public IHumiditySensor, public IPressu
          * @param devAddr address of used i2c device
          * @param mode BME280 mode
          */
-	BME280();
-        //BME280 (int bus, int devAddr= 0x77 , uint8_t mode = 0x03 );
-	BME280 (int bus, int devAddr = BME280_I2C_ADDRESS1);
+    	BME280 (int bus, int devAddr = BME280_I2C_ADDRESS1);
 
         /**
          * BME280 object destructor, basicaly it close i2c connection.
@@ -81,36 +77,33 @@ class BME280 : public ITemperatureSensor, public IHumiditySensor, public IPressu
         /**
          * Return temperature
          */
-	int32_t getTemperatureInternal(void);
+    	int32_t getTemperatureInternal(void);
 
          /**
          * Return pressure
          */
-	int32_t getPressureInternal(void);
-	 /**
+        int32_t getPressureInternal(void);
+
+    	 /**
          * Return  humidity
          */
-	int32_t getHumidityInternal(void);
+        int32_t getHumidityInternal(void);
 
 
-	  /**
+        /**
          * Return temperature
          */
-	int32_t getTemperatureRawInternal(void);
+        int32_t getTemperatureRawInternal(void);
 
          /**
          * Return pressure
          */
-	int32_t getPressureRawInternal(void);
-	 /**
+        int32_t getPressureRawInternal(void);
+
+        /**
          * Return  humidity
          */
-	int32_t getHumidityRawInternal(void);
-
-
-
-
-        //int32_t getTemperatureRaw(void);
+        int32_t getHumidityRawInternal(void);
 
         /**
          * Returns whether the sensor is configured.
@@ -138,17 +131,11 @@ class BME280 : public ITemperatureSensor, public IHumiditySensor, public IPressu
         static int32_t i2c_write_string(uint8_t dev_addr,uint8_t*  ptr, uint8_t cnt);
         static int32_t i2c_write_read_string(uint8_t dev_addr,uint8_t reg_addr , uint8_t * ptr, uint8_t cnt);
         static int8_t I2C_routine();
-	static int8_t BME280_I2C_bus_write(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint8_t cnt);
-	static void BME280_delay_msek(uint16_t msek);
-	static int8_t BME280_I2C_bus_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint8_t cnt);
+    	static int8_t BME280_I2C_bus_write(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint8_t cnt);
+    	static void BME280_delay_msek(uint16_t msek);
+    	static int8_t BME280_I2C_bus_read(uint8_t dev_addr, uint8_t reg_addr, uint8_t *reg_data, uint8_t cnt);
 
 };
-
-
-
-
-
-
 
 }
 
