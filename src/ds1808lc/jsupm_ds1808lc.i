@@ -2,7 +2,7 @@
 %include "../upm.i"
 
 %{
-    #include "tubelight.h"
+    #include "ds1808lc.h"
 %}
 
-%include "tubelight.h"
+%include "ds1808lc.h"
